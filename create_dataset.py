@@ -1,5 +1,6 @@
 import pandas as pd
 
+'''
 
 def compress_basic_data(filename):
     """
@@ -36,7 +37,7 @@ crew_data = pd.read_table('Data/title_crew.tsv')
 print("reading ratings data...")
 ratings_data = pd.read_table('Data/title_ratings.tsv')
 
-# Pick out the correct movies from the other datasets
+# Set indexes to tconst
 crew_data.index = crew_data.tconst
 ratings_data.index = ratings_data.tconst
 
@@ -50,3 +51,24 @@ rating_labels = ['averageRating']
 #                        axis=1, join='inner')
 
 #movies_dataset.to_csv('movies_dataset.csv')
+'''
+
+# Open movies dataset
+movies_dataset = pd.read_csv('movies_dataset.csv')
+movies_dataset.index = movies_dataset.primaryTitle
+print(movies_dataset.head())
+
+# Open box office dataset
+bo_dataset = pd.read_csv('number_title_boxoffice.csv', sep=';')
+bo_dataset.columns = ['no', 'primaryTitle', 'gross']
+bo_dataset.index = bo_dataset.primaryTitle
+
+
+# Concatenate files
+movies_labels = ['genres', 'directors', 'writers', 'averageRating']
+bo_labels = ['gross']
+bo_movies_dataset = pd.merge(movies_dataset[movies_labels], bo_dataset[bo_labels], left_index=True, right_index=True, how='outer')
+print(bo_movies_dataset.head())
+bo_movies_dataset = bo_movies_dataset.dropna()
+
+bo_movies_dataset.to_csv('Box_office_movies_dataset.csv')
