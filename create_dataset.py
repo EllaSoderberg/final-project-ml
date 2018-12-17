@@ -1,5 +1,6 @@
 import pandas as pd
 
+'''
 
 def compress_basic_data(filename):
     """
@@ -36,7 +37,7 @@ crew_data = pd.read_table('Data/title_crew.tsv')
 print("reading ratings data...")
 ratings_data = pd.read_table('Data/title_ratings.tsv')
 
-# Pick out the correct movies from the other datasets
+# Set indexes to tconst
 crew_data.index = crew_data.tconst
 ratings_data.index = ratings_data.tconst
 
@@ -50,3 +51,35 @@ rating_labels = ['averageRating']
 #                        axis=1, join='inner')
 
 #movies_dataset.to_csv('movies_dataset.csv')
+'''
+
+# Open movies dataset
+movies_dataset = pd.read_csv('movies_dataset.csv')
+movies_dataset.index = movies_dataset.primaryTitle
+print(movies_dataset.head())
+
+# Open box office dataset
+bo_dataset = pd.read_csv('number_title_boxoffice.csv', sep=';')
+bo_dataset.columns = ['no', 'primaryTitle', 'gross']
+bo_dataset.index = bo_dataset.primaryTitle
+
+# Merge files
+movies_labels = ['genres', 'directors', 'writers', 'averageRating']
+bo_labels = ['gross']
+bo_movies_dataset = pd.merge(movies_dataset[movies_labels], bo_dataset[bo_labels], left_index=True, right_index=True, how='outer')
+
+# Remove all the movies without complete data
+bo_movies_dataset = bo_movies_dataset.dropna()
+
+# Make gross to int
+bo_movies_dataset['gross'] = bo_movies_dataset['gross'].apply(lambda x: int(x.replace(',', '')))
+# Make genres to list
+bo_movies_dataset['genres'] = bo_movies_dataset['genres'].apply(lambda x: x.split(','))
+# Make directors to list
+bo_movies_dataset['directors'] = bo_movies_dataset['directors'].apply(lambda x: x.split(','))
+# Make writers to list
+bo_movies_dataset['writers'] = bo_movies_dataset['writers'].apply(lambda x: x.split(','))
+# Convert rating to float
+bo_movies_dataset['averageRating'] = pd.to_numeric(bo_movies_dataset['averageRating'])
+
+bo_movies_dataset.to_csv('Box_office_movies_dataset.csv')
