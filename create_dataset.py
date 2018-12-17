@@ -63,12 +63,23 @@ bo_dataset = pd.read_csv('number_title_boxoffice.csv', sep=';')
 bo_dataset.columns = ['no', 'primaryTitle', 'gross']
 bo_dataset.index = bo_dataset.primaryTitle
 
-
-# Concatenate files
+# Merge files
 movies_labels = ['genres', 'directors', 'writers', 'averageRating']
 bo_labels = ['gross']
 bo_movies_dataset = pd.merge(movies_dataset[movies_labels], bo_dataset[bo_labels], left_index=True, right_index=True, how='outer')
-print(bo_movies_dataset.head())
+
+# Remove all the movies without complete data
 bo_movies_dataset = bo_movies_dataset.dropna()
+
+# Make gross to int
+bo_movies_dataset['gross'] = bo_movies_dataset['gross'].apply(lambda x: int(x.replace(',', '')))
+# Make genres to list
+bo_movies_dataset['genres'] = bo_movies_dataset['genres'].apply(lambda x: x.split(','))
+# Make directors to list
+bo_movies_dataset['directors'] = bo_movies_dataset['directors'].apply(lambda x: x.split(','))
+# Make writers to list
+bo_movies_dataset['writers'] = bo_movies_dataset['writers'].apply(lambda x: x.split(','))
+# Convert rating to float
+bo_movies_dataset['averageRating'] = pd.to_numeric(bo_movies_dataset['averageRating'])
 
 bo_movies_dataset.to_csv('Box_office_movies_dataset.csv')
