@@ -1,4 +1,4 @@
-id,tconst;title;genres;directors;writers;averageRating;boxOffice;yearOfBoxOffice;year;directorsNames;votes;budget
+id;tconst;title;genres;directors;writers;averageRating;boxOffice;yearOfBoxOffice;year;directorsNames;votes;budget
 0;tt7535780;The Great Wall;['Documentary'];['nm2738464'];['nm0434525'];6.5;334550106;2017;2017;"[""Tadhg O'Sullivan""]";20;150000000
 1;tt3521164;Moana;['Adventure', 'Animation', 'Comedy'];['nm2320658', 'nm0930261', 'nm0615780', 'nm0166256'];['nm1158544', 'nm0166256', 'nm0615780', 'nm0930261', 'nm2320658', 'nm0962596', 'nm3764118', 'nm3764493'];7.6;637519488;2017;2016;['Don Hall', 'Chris Williams', 'John Musker', 'Ron Clements', ''];208848;150000000
 2;tt3949660;Teenage Mutant Ninja Turtles: Out of the Shadows;['Action', 'Adventure', 'Comedy'];['nm1757777'];['nm0032227', 'nm0625858', 'nm0481990', 'nm0247653'];6.0;245330198;2017;2016;['Dave Green'];74524;135000000
