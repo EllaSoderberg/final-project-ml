@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-data = pd.read_csv('data/Movies_data_Merged_12-14.csv', sep=';', thousands=',')
+data = pd.read_csv('data/old/Movies_data_Merged_12-14.csv', sep=';', thousands=',')
 
 data['Box_Office'] = pd.to_numeric(data['Box_Office'], errors='coerce')
 
