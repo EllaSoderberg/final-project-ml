@@ -1,7 +1,6 @@
 import pandas as pd
 
 '''
-
 def compress_basic_data(filename):
     """
     A function to choose all the films with the value "movie"
@@ -53,33 +52,27 @@ rating_labels = ['averageRating']
 #movies_dataset.to_csv('movies_dataset.csv')
 '''
 
-# Open movies dataset
-movies_dataset = pd.read_csv('movies_dataset.csv')
-movies_dataset.index = movies_dataset.primaryTitle
-print(movies_dataset.head())
-
 # Open box office dataset
-bo_dataset = pd.read_csv('number_title_boxoffice.csv', sep=';')
-bo_dataset.columns = ['no', 'primaryTitle', 'gross']
-bo_dataset.index = bo_dataset.primaryTitle
+movies_dataset = pd.read_csv('data/Movies_data_Merged_12-17.csv', sep=';')
+print(len(movies_dataset))
 
-# Merge files
-movies_labels = ['genres', 'directors', 'writers', 'averageRating']
-bo_labels = ['gross']
-bo_movies_dataset = pd.merge(movies_dataset[movies_labels], bo_dataset[bo_labels], left_index=True, right_index=True, how='outer')
-
-# Remove all the movies without complete data
-bo_movies_dataset = bo_movies_dataset.dropna()
-
-# Make gross to int
-bo_movies_dataset['gross'] = bo_movies_dataset['gross'].apply(lambda x: int(x.replace(',', '')))
+# Make Box_Office to int
+movies_dataset['Box_Office'] = movies_dataset['Box_Office'].apply(lambda x: int(x.replace(',', '')))
 # Make genres to list
-bo_movies_dataset['genres'] = bo_movies_dataset['genres'].apply(lambda x: x.split(','))
+movies_dataset['genres'] = movies_dataset['genres'].apply(lambda x: x.split(','))
 # Make directors to list
-bo_movies_dataset['directors'] = bo_movies_dataset['directors'].apply(lambda x: x.split(','))
+movies_dataset['directors'] = movies_dataset['directors'].apply(lambda x: x.split(','))
 # Make writers to list
-bo_movies_dataset['writers'] = bo_movies_dataset['writers'].apply(lambda x: x.split(','))
+movies_dataset['writers'] = movies_dataset['writers'].apply(lambda x: x.split(','))
+# Make directorsNames to list
+movies_dataset['directorsNames'] = movies_dataset['directorsNames'].apply(lambda x: x.split(','))
 # Convert rating to float
-bo_movies_dataset['averageRating'] = pd.to_numeric(bo_movies_dataset['averageRating'])
+movies_dataset['averageRating'] = pd.to_numeric(movies_dataset['averageRating'])
+# Convert Year(box) to float
+movies_dataset['Year(box)'] = pd.to_numeric(movies_dataset['Year(box)'])
+# Convert Year to numeric
+movies_dataset['Year'] = pd.to_numeric(movies_dataset['Year'])
+# Convert votes to numeric
+movies_dataset['votes'] = pd.to_numeric(movies_dataset['votes'])
 
-bo_movies_dataset.to_csv('Box_office_movies_dataset.csv')
+movies_dataset.to_csv('final_movies_dataset.csv')
