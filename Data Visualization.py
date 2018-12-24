@@ -3,12 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-data = pd.read_csv('data/old/Movies_data_Merged_12-14.csv', sep=';', thousands=',')
+data = pd.read_csv('data/old/Movies_data_Merged_12-17.csv', sep=';', thousands=',')
+
+data2 = pd.read_csv('data/movies_data_12-18.csv', sep=';', thousands=',')
 
 data['Box_Office'] = pd.to_numeric(data['Box_Office'], errors='coerce')
 
 #Director vs year vs box office
-
 
 data_copy = data.copy().dropna()
 director_box = data_copy.groupby(data_copy['directorsNames'])['Box_Office'].sum()
@@ -29,11 +30,48 @@ writers_box = data_copy.groupby(data_copy['writers'])['Box_Office'].sum()
 writers_box_index = writers_box.sort_values(ascending=False)[:20].index
 writers_box_pivot = pd.pivot_table(data = data_copy[data_copy['writers'].isin(writers_box_index)],index=['Year'], columns = ['writers'], values= ['Box_Office'], aggfunc = 'sum')
 
-
 fig, ax = plt.subplots()
 sns.heatmap(writers_box_pivot['Box_Office'],vmin = 0, annot= False, linewidth=.5, ax=ax)
 plt.title('Writers vs Year vs Box Office')
 plt.ylabel('Year')
+
+plt.show()
+
+# Year vs box office with budget and average rating
+
+cmap = sns.cubehelix_palette(rot=-.2, as_cmap=True)
+ax = sns.scatterplot(x="year", y="boxOffice",
+                     hue="budget", size="averageRating",
+                     palette=cmap, sizes=(10, 200),
+                     data=data2)
+
+plt.show()
+
+# Genre vs box office and year
+
+data2['topgenre'] = data2['genres'].apply(lambda x: x.split(',')[0].strip('[').strip(']').strip("'"))
+
+sns.set(style="white")
+
+sns.relplot(x="year", y="boxOffice", hue="topgenre", palette="muted",
+            height=6, data=data2)
+plt.title('Genre vs box office and year')
+plt.xlabel('Year')
+plt.ylabel('Box office')
+
+plt.show()
+
+# Genre vs box office/budget ratio and year
+
+data2['bo/budget'] = data2['boxOffice'] / data2['budget']
+
+sns.set(style="white")
+
+sns.relplot(x="year", y="bo/budget", hue="topgenre", palette="muted",
+            height=6, data=data2)
+plt.title('Genre vs box office budget ratio and year')
+plt.xlabel('Year')
+plt.ylabel('Box office / budget')
 
 plt.show()
 
