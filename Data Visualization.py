@@ -9,7 +9,7 @@ data2 = pd.read_csv('data/movies_data_12-18.csv', sep=';', thousands=',')
 
 data['Box_Office'] = pd.to_numeric(data['Box_Office'], errors='coerce')
 
-'''
+
 #Director vs year vs box office
 
 data_copy = data.copy().dropna()
@@ -76,24 +76,18 @@ plt.ylabel('Box office / budget')
 
 plt.show()
 
-fig = plt.figure()
-ax1 = fig.add_subplot(111)
-ax2 = fig.add_subplot(111)
-ax3 = fig.add_subplot(111)
 
-
-ax2.plot(x_test, y_initial_pred, color='black', linewidth=3)
-ax3.plot(x_test, y_pred, color='blue', linewidth=3)
-
-plt.xlabel(x_label)
-plt.ylabel(y_label)
-
-'''
 # Box office vs budget, with and without outliers
 plt.scatter(data2['boxOffice'], data2['budget'], color='black')
+plt.title('Data with outliers')
+plt.xlabel('Box office')
+plt.ylabel('Budget')
 plt.show()
 
 data2 = data2.drop(data2[data2.boxOffice > 1500000000].index)
 data2= data2.drop(data2[data2.budget > 300000000].index)
 plt.scatter(data2['boxOffice'], data2['budget'], color='black')
+plt.title('Data without outliers')
+plt.xlabel('Box office')
+plt.ylabel('Budget')
 plt.show()

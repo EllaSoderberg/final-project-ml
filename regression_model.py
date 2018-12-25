@@ -41,3 +41,8 @@ def run_regression(dataset, features, target, enable_scaler=False):
               r2_score(y_train, y_pred_train))
 
 run_regression(dataset, features, target)#, enable_scaler=True)
+
+dataset = dataset.drop(dataset[dataset.boxOffice > 1500000000].index)
+data2= dataset.drop(dataset[dataset.budget > 300000000].index)
+
+run_regression(dataset, features, target)#, enable_scaler=True)
