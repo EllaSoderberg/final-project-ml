@@ -1,6 +1,6 @@
 import pandas as pd
 
-'''
+
 def compress_basic_data(filename):
     """
     A function to choose all the films with the value "movie"
@@ -50,7 +50,6 @@ rating_labels = ['averageRating']
 #                        axis=1, join='inner')
 
 #movies_dataset.to_csv('movies_dataset.csv')
-'''
 
 # Open box office dataset
 movies_dataset = pd.read_csv('data/Movies_data_Merged_12-17.csv', sep=';')
